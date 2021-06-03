@@ -214,7 +214,7 @@ def test(data_loader, model, input_n=20, output_n=50, is_cuda=False, dim_used=[]
 
     return targ_all_3d, pred_all_3d
 
-def main(opt,img_path):
+def main(opt,img_path,model_path_short, model_path_long):
     is_cuda = torch.cuda.is_available()
 
     # create model
@@ -234,9 +234,9 @@ def main(opt,img_path):
     opt.is_load = True
     if opt.is_load:
         if dct_n == 20:
-            model_path_len = 'checkpoint/h36m_3d_short/ckpt_main_3d_3D_in10_out10_dct_n_20_best.pth.tar'
+            model_path_len = model_path_short
         else:
-            model_path_len = 'checkpoint/h36m_3d_long/ckpt_main_3d_3D_in10_out25_dct_n_35_best.pth.tar'
+            model_path_len = model_path_long
         print(">>> loading ckpt len from '{}'".format(model_path_len))
         if is_cuda:
             ckpt = torch.load(model_path_len)
@@ -279,7 +279,10 @@ def main(opt,img_path):
 
 if __name__ == "__main__":
     option = Options().parse()
-    main(option, "/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/imgs")
-    save_gif("/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/imgs",
-             "/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/gifs",)
+    main(option,
+         img_path="/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/imgs",
+         model_path_short='checkpoint/h36m_3d_short/ckpt_main_3d_3D_in10_out10_dct_n_20_best.pth.tar',
+         model_path_long='checkpoint/h36m_3d_long/ckpt_main_3d_3D_in10_out25_dct_n_35_best.pth.tar')
+    save_gif(imgs_root="/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/imgs",
+             gif_root="/mnt/DataDrive164/zhouhonghong/outputs/MGCN/h36m_long_3d/gifs",)
 
